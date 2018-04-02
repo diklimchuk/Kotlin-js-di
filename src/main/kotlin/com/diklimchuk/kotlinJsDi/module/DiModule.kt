@@ -45,7 +45,6 @@ class DiModule private constructor(
                 if (subcomponents.contains(scope)) {
                     throw Exception("Module already contains a subcomponent for a scope $scope")
                 }
-                console.log("Adding subcomponent $subcomponent for scope $scope")
                 subcomponents[scope] = subcomponent
             }
 
@@ -100,7 +99,6 @@ class DiModule private constructor(
                 }
                 instanceProviders.remove(key)
                 instanceProviders[DiKey.ofName(name)] = provider as DiProvider<Any>
-                console.log("Added provider for name: $name")
             }
 
             fun <T : Any> add(key: DiKey, provider: DiProvider<T>) {
@@ -127,32 +125,21 @@ class DiModule private constructor(
     }
 
     fun hasSubcomponent(scope: DiScope): Boolean {
-        console.log("Checking has scope $scope for ${subcomponents.size} subcomponents")
         return subcomponents.containsKey(scope)
     }
 
     fun getSubcomponent(scope: DiScope): DiComponent {
-        console.log("Getting scope $scope from ${subcomponents.size} subcomponents")
         subcomponents.forEach { console.log("Scope: ${it.key}. Subcomponent: ${it.value}") }
         return subcomponents[scope] ?: throw Exception("No subcomponent for scope: $scope")
     }
 
-    fun testPrint() {
-        console.log("Module contains providers for keys: ")
-        providers.forEach {
-            console.log("\t${it.key}")
-        }
-    }
-
     fun hasProvider(key: DiKey): Boolean {
-        console.log("Looking for a provider for key $key. Subcomponents number: ${subcomponents.size}")
-        return providers.containsKey(key)// || subcomponents.values.any { it.hasProvider(key) }
+        return providers.containsKey(key)
     }
 
-    suspend fun <T> getProvider(key: DiKey): DiProvider<T> {
+    fun <T> getProvider(key: DiKey): DiProvider<T> {
         @Suppress("UNCHECKED_CAST")
         return (providers[key] as? DiProvider<T>)
-//                ?: subcomponents.values.firstOrNull { it.hasProvider(key) }?.inject(key)
                 ?: throw Exception("No provider for key: $key")
     }
 }

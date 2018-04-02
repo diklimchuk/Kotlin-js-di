@@ -43,9 +43,8 @@ open class DiComponent(
         }
     }
 
-    /** Finds [DiModule] that can provides [key] */
+    /** Finds [DiModule] that can provide [key] */
     private fun findModuleFor(key: DiKey): DiModule {
-        console.log("Component contains ${releasableModules.size} releasable modules")
         val appropriateModules = getAllModules()
                 .filter { it.hasProvider(key) }
 
@@ -72,7 +71,6 @@ open class DiComponent(
     }
 
     private fun addReleasableModule(module: DiModule) {
-        console.log("Adding releasable module to subcomponent")
         releasableModules.add(module)
     }
 
@@ -81,20 +79,8 @@ open class DiComponent(
         modules.forEach { it.release() }
     }
 
-    fun hasProvider(key: DiKey): Boolean {
-        console.log("Checking provider for key: $key. Releasable modules number: ${releasableModules.size}")
-        if (releasableModules.firstOrNull()?.hasProvider(key) == true) {
-            console.log("First releasable module had provider for key: $key")
-        } else {
-            console.log("First releasable module can't provide key: $key")
-        }
-        return getAllModules().any { it.hasProvider(key) }
-    }
-
     fun openScope(scope: DiScope, lateinitProviders: (DiModule.Companion.Builder) -> Unit): DiComponent {
-        val subcomponent = findModuleFor(scope)
-                .apply { console.log("Using ${this::class.simpleName} to access scope $scope") }
-                .getSubcomponent(scope)
+        val subcomponent = findModuleFor(scope).getSubcomponent(scope)
         val lateinitModule = DiModule.Companion.Builder().apply(lateinitProviders).complete()
         lateinitModule.component = this
         subcomponent.addReleasableModule(lateinitModule)
