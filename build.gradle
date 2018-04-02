@@ -3,26 +3,35 @@ buildscript {
 
     repositories {
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
+        classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 group 'com.diklimchuk'
-version '0.0.1'
+version '0.0.2'
 
-apply plugin: 'java'
 apply plugin: 'kotlin2js'
+apply plugin: 'com.moowork.node'
+
+apply from: file('gradle/publish-npm.gradle')
 
 sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
+
+kotlin.experimental.coroutines "enable"
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+[compileKotlin2Js, compileTestKotlin2Js]*.configure {
+    kotlinOptions.moduleKind = "commonjs"
+    kotlinOptions.sourceMap = true
 }

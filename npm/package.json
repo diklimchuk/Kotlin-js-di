@@ -1,0 +1,25 @@
+{
+  "name": "kotlin-js-di",
+  "version" : "$version",
+  "description" : "Kotlin.js di library",
+  "main" : "kotlin-js-di.js",
+  "author": "diklimchuk",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/diklimchuk/Kotlin-js-di",
+  "bugs": {
+    "url": "https://github.com/diklimchuk/Kotlin-js-di/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diklimchuk/Kotlin-js-di.git"
+  },
+  "keywords": [
+    "Kotlin",
+    "di",
+    "Kotlin.js",
+    "JavaScript"
+  ],
+  "dependencies": {
+    "kotlin": "$kotlin_version"
+  }
+}
