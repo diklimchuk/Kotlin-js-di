@@ -16,11 +16,7 @@ open class DiComponent(
     private val modules: Collection<DiModule> = modules.toList()
     private val releasableModules: MutableCollection<DiModule> = mutableListOf()
 
-    init {
-        modules.forEach { it.component = this }
-    }
-
-    private val cache: MutableMap<DiKey, Any> = mutableMapOf()
+    init { modules.forEach { it.component = this } }
 
     suspend inline fun <reified T : Any> get(): T {
         return get(T::class)
@@ -37,19 +33,11 @@ open class DiComponent(
     }
 
     suspend fun <T : Any> inject(key: DiKey): T {
-        val cached = cache[key]
-        if (cached != null) {
-            @Suppress("UNCHECKED_CAST")
-            return cached as T
-        }
 
         return try {
-            val value = findModuleFor(key)
+            findModuleFor(key)
                     .getProvider<T>(key)
                     .provide(this)
-
-            cache[key] = value as Any
-            value
         } catch (t: Throwable) {
             parent?.inject(key) ?: throw Exception(t)
         }
