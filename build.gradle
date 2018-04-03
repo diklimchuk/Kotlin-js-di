@@ -35,3 +35,11 @@ dependencies {
     kotlinOptions.moduleKind = "commonjs"
     kotlinOptions.sourceMap = true
 }
+
+task runMocha(type: NodeTask, dependsOn: [compileTestKotlin2Js]) {
+    script = file("${rootDir}/node_modules/mocha/bin/mocha")
+    args = [compileTestKotlin2Js.outputFile]
+    onlyIf { compileTestKotlin2Js.outputFile.exists() }
+}
+
+test.dependsOn runMocha

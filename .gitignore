@@ -29,3 +29,6 @@ build
 
 # Gradle
 .gradle
+
+# Node modules
+node_modules
