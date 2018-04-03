@@ -4,6 +4,7 @@ import com.diklimchuk.kotlinJsDi.DiComponent
 import com.diklimchuk.kotlinJsDi.DiKey
 import com.diklimchuk.kotlinJsDi.module.dsl.DefineProvider
 import com.diklimchuk.kotlinJsDi.module.dsl.DefineQualifier
+import com.diklimchuk.kotlinJsDi.module.dsl.DefineSubcomponents
 import com.diklimchuk.kotlinJsDi.provider.DiFactoryProvider
 import com.diklimchuk.kotlinJsDi.provider.DiInstanceProvider
 import com.diklimchuk.kotlinJsDi.provider.DiProvider
@@ -36,9 +37,9 @@ class DiModule private constructor(
                 return DiModule(instanceProviders, subcomponents)
             }
 
-            infix fun hasSubcomponents(definition: (definition: SubcomponentsDefinition) -> Unit) {
-                val subcomponents = SubcomponentsDefinition(this)
-                definition(subcomponents)
+            infix fun hasSubcomponents(init: (definition: DefineSubcomponents) -> Unit) {
+                val subcomponents = DefineSubcomponents(this)
+                init(subcomponents)
             }
 
             fun addSubcomponent(subcomponent: DiComponent, scope: DiScope) {
@@ -46,24 +47,6 @@ class DiModule private constructor(
                     throw Exception("Module already contains a subcomponent for a scope $scope")
                 }
                 subcomponents[scope] = subcomponent
-            }
-
-            class SubcomponentsDefinition(
-                    private val moduleBuilder: Builder
-            ) {
-                infix fun add(subcomponent: DiComponent): DefineSubcomponentScope {
-                    return DefineSubcomponentScope(moduleBuilder, subcomponent)
-                }
-            }
-
-            class DefineSubcomponentScope(
-                    private val moduleBuilder: Builder,
-                    private val subcomponent: DiComponent
-            ) {
-                infix fun scoped(scope: DiScope) {
-                    console.log("Trying to add subcomponent $subcomponent for scope $scope")
-                    moduleBuilder.addSubcomponent(subcomponent, scope)
-                }
             }
 
             inline infix fun <reified T : Any> binds(instance: T): DefineQualifier<T> {
