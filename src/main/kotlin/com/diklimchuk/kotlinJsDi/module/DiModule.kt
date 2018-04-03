@@ -24,7 +24,7 @@ class DiModule private constructor(
 
     lateinit var component: DiComponent
 
-    class Builder constructor() {
+    class Builder {
 
         private val instanceProviders: MutableMap<DiKey, DiProvider<Any>> = mutableMapOf()
         private val subcomponents: MutableMap<DiScope, DiComponent> = mutableMapOf()
@@ -64,7 +64,7 @@ class DiModule private constructor(
             return DefineQualifier(this, key, provider)
         }
 
-        // it scopes { XClass(get()) } to "myqualifier"
+        // it scopes { XClass(get()) } with "myqualifier"
         inline infix fun <reified T : Any> scopes(noinline factory: suspend DiComponent.() -> T): DefineQualifier<T> {
             val provider = DiScopedProvider(factory)
             val key = DiKey.ofClass<T>()
@@ -72,7 +72,7 @@ class DiModule private constructor(
             return DefineQualifier(this, key, provider)
         }
 
-        // it provides { XClass(get()) } to "myqual"
+        // it provides { XClass(get()) } with "myqual"
         inline infix fun <reified T : Any> provides(noinline factory: suspend DiComponent.() -> T): DefineQualifier<T> {
             val provider = DiFactoryProvider(factory)
             val key = DiKey.ofClass<T>()
@@ -86,7 +86,7 @@ class DiModule private constructor(
 
         fun <T : Any> overrideProvider(key: DiKey, provider: DiProvider<T>, name: String) {
             if (!instanceProviders.containsKey(key)) {
-                throw Exception("Attempting to override non-existent provider for key: $key with name: $name")
+                throw Exception("Attempting with override non-existent provider for key: $key with name: $name")
             }
             instanceProviders.remove(key)
             instanceProviders[DiKey.ofName(name)] = provider as DiProvider<Any>

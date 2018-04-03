@@ -9,7 +9,7 @@ class DefineQualifier<T : Any>(
         private val key: DiKey,
         private val provider: DiProvider<T>
 ) {
-    infix fun to(name: String) {
+    infix fun with(name: String) {
         module.overrideProvider(key, provider, name)
     }
 }

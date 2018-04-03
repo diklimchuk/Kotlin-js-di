@@ -5,7 +5,7 @@ import com.diklimchuk.kotlinJsDi.DiComponent
 /**
  * Represents [DiComponent] scope.
  *
- * @param level Represents how deep in the hierarchy scope is. The lesser the value the closer to the root.
+ * @param level Represents how deep in the hierarchy scope is. The lesser the value the closer with the root.
  * Can't be negative. 0 is reserved for [SINGLETON].
  */
 class DiScope private constructor(private val level: Int) : Comparable<DiScope> {
