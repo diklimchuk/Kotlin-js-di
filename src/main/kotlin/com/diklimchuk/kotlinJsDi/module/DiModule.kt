@@ -89,7 +89,11 @@ class DiModule private constructor(
                 throw Exception("Attempting with override non-existent provider for key: $key with name: $name")
             }
             instanceProviders.remove(key)
-            instanceProviders[DiKey.ofName(name)] = provider as DiProvider<Any>
+            val newKey = DiKey.ofName(name)
+            if (instanceProviders.containsKey(newKey)) {
+                throw Exception("This module already can provide dependencies for name: $name")
+            }
+            instanceProviders[newKey] = provider as DiProvider<Any>
         }
     }
 
