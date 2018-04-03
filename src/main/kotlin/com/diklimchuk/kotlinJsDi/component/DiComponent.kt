@@ -37,13 +37,25 @@ open class DiComponent(
     }
 
     private suspend fun <T : Any> inject(key: DiKey): T {
-        return try {
+        // TODO: Don't instantiate dependencies. Check possibility first.
+        val thisComponentDependency = try {
             findModuleFor(key)
                     .getProvider<T>(key)
                     .provide(this)
         } catch (t: Throwable) {
-            parent?.inject(key) ?: throw Exception(t)
+            null
         }
+        val parentComponentDependency = try {
+            parent?.inject<T>(key)
+        } catch (t: Throwable) {
+            null
+        }
+        if (thisComponentDependency != null && parentComponentDependency != null) {
+            throw Exception("Same dependency can be retrieved both by component and its subcomponent")
+        }
+        return thisComponentDependency
+                ?: parentComponentDependency
+                ?: throw Exception("No module contains key: $key")
     }
 
     /** Finds [DiModule] that can provide [key] */

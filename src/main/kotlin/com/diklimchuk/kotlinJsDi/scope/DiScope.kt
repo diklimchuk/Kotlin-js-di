@@ -5,6 +5,10 @@ import com.diklimchuk.kotlinJsDi.component.DiComponent
 /**
  * Represents [DiComponent] scope.
  *
+ * TODO: Don't allow to create scopes with the same level.
+ *
+ * TODO: Allow to create child scopes with scope.createChild() and prohibit to use [create]
+ *
  * @param level Represents how deep in the hierarchy scope is. The lesser the value the closer with the root.
  * Can't be negative. 0 is reserved for [SINGLETON].
  */
