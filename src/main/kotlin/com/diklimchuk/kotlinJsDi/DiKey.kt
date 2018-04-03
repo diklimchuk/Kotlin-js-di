@@ -2,43 +2,45 @@ package com.diklimchuk.kotlinJsDi
 
 import kotlin.reflect.KClass
 
+/**
+ * Unique provider identifier.
+ *
+ * Can identify provider for specific class or name.
+ * @param key Unique name. Two providers may not have the same [key].
+ */
 class DiKey private constructor(
+        private val type: Type,
         private val key: String
 ) {
 
-    companion object {
-        /** Named keys can't start with this prefix to allow for other keys to have it. */
-        private const val RESERVED_PREFIX = "###"
+    private enum class Type {
+        Name, Class
+    }
 
+    companion object {
         inline fun <reified T : Any> ofClass(): DiKey {
             return ofClass(T::class)
         }
 
         fun <T : Any> ofClass(klass: KClass<T>): DiKey {
-            return DiKey("${RESERVED_PREFIX}KLASS_${klass.simpleName}")
+            val key = klass.simpleName ?: throw NullPointerException("Can't create key: KClass has null name.")
+            return DiKey(Type.Class, key)
         }
 
         fun ofName(name: String): DiKey {
-            ensureValidNameKey(name)
-            return DiKey(name)
-        }
-
-        private fun ensureValidNameKey(name: String) {
-            if (name.startsWith("###")) {
-                throw Exception("Name key can't start with ${RESERVED_PREFIX}")
-            }
+            return DiKey(Type.Name, name)
         }
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is DiKey && key == other.key
+        return other is DiKey && type == other.type && key == other.key
     }
 
     override fun hashCode(): Int {
-        return key.hashCode()
+        return 31 * type.hashCode() + key.hashCode()
     }
 
     override fun toString(): String {
-        return "Key: $key"
+        return "DiKey of type: $type for key: $key"
     }
 }
