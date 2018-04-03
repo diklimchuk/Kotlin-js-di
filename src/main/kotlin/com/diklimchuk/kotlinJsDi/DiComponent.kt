@@ -1,7 +1,7 @@
 package com.diklimchuk.kotlinJsDi
 
 import com.diklimchuk.kotlinJsDi.module.DiModule
-import com.diklimchuk.kotlinJsDi.module.DiScope
+import com.diklimchuk.kotlinJsDi.scope.DiScope
 import kotlin.reflect.KClass
 
 /**

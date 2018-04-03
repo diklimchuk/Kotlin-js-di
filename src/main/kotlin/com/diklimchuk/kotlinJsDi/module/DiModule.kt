@@ -2,6 +2,7 @@ package com.diklimchuk.kotlinJsDi.module
 
 import com.diklimchuk.kotlinJsDi.DiComponent
 import com.diklimchuk.kotlinJsDi.DiKey
+import com.diklimchuk.kotlinJsDi.scope.DiScope
 import com.diklimchuk.kotlinJsDi.module.dsl.DefineProvider
 import com.diklimchuk.kotlinJsDi.module.dsl.DefineQualifier
 import com.diklimchuk.kotlinJsDi.module.dsl.DefineSubcomponents
@@ -14,10 +15,6 @@ fun createDiModule(init: (module: DiModule.Builder) -> Unit): DiModule {
     val builder = DiModule.Builder()
     init(builder)
     return builder.complete()
-}
-
-interface DiScope : Comparable<DiScope> {
-
 }
 
 class DiModule private constructor(
@@ -36,16 +33,28 @@ class DiModule private constructor(
             return DiModule(instanceProviders, subcomponents)
         }
 
-        infix fun hasSubcomponents(init: (definition: DefineSubcomponents) -> Unit) {
-            val subcomponents = DefineSubcomponents(this)
-            init(subcomponents)
-        }
-
         fun addSubcomponent(subcomponent: DiComponent, scope: DiScope) {
             if (subcomponents.contains(scope)) {
                 throw Exception("Module already contains a subcomponent for a scope $scope")
             }
             subcomponents[scope] = subcomponent
+        }
+
+        fun <T : Any> addProvider(key: DiKey, provider: DiProvider<T>) {
+            if (hasProvider(key)) {
+                throw Exception("Can't add second provider for key $key")
+            }
+
+            instanceProviders[key] = provider as DiProvider<Any>
+        }
+
+        private fun hasProvider(key: DiKey): Boolean {
+            return instanceProviders.containsKey(key)
+        }
+
+        infix fun hasSubcomponents(init: (definition: DefineSubcomponents) -> Unit) {
+            val subcomponents = DefineSubcomponents(this)
+            init(subcomponents)
         }
 
         inline infix fun <reified T : Any> binds(instance: T): DefineQualifier<T> {
@@ -81,18 +90,6 @@ class DiModule private constructor(
             }
             instanceProviders.remove(key)
             instanceProviders[DiKey.ofName(name)] = provider as DiProvider<Any>
-        }
-
-        fun <T : Any> addProvider(key: DiKey, provider: DiProvider<T>) {
-            if (hasProvider(key)) {
-                throw Exception("Can't add second provider for key $key")
-            }
-
-            instanceProviders[key] = provider as DiProvider<Any>
-        }
-
-        private fun hasProvider(key: DiKey): Boolean {
-            return instanceProviders.containsKey(key)
         }
     }
 
