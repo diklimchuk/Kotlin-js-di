@@ -56,6 +56,10 @@ task installKotlinTest(type: NpmTask) {
     args = ['install', 'kotlin-test']
 }
 
+task installSinon(type: NpmTask) {
+    args = ['install', 'sinon']
+}
+
 
 def nodeModuleDir = "$rootDir/node_modules/$name"
 def nodeModuleMainFile = "${name}.js"
@@ -91,7 +95,7 @@ classes.dependsOn createNodeModule
 
 clean { delete "$rootDir/node_modules"}
 
-task runMocha(type: NodeTask, dependsOn: [compileTestKotlin2Js, installMocha, installKotlinTest, installKotlinCoroutines]) {
+task runMocha(type: NodeTask, dependsOn: [compileTestKotlin2Js, installMocha, installKotlinTest, installSinon, installKotlinCoroutines]) {
     script = file("${rootDir}/node_modules/mocha/bin/mocha")
     args = [compileTestKotlin2Js.outputFile]
     onlyIf { compileTestKotlin2Js.outputFile.exists() }
