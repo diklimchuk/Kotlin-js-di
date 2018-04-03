@@ -8,10 +8,11 @@ import testClasses.TestClass
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
+@Suppress("unused")
 class DiModuleReleasingTest {
 
     @Test
-    fun providerIsSuccesfullyReleased() {
+    fun providerIsSuccessfullyReleased() {
         val module = createDiModule {
             it scopes { TestClass() }
         }

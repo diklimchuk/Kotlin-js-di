@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.diklimchuk.kotlinJsDi.module.builder
 
 import com.diklimchuk.kotlinJsDi.DiComponent
@@ -8,6 +10,7 @@ import com.diklimchuk.kotlinJsDi.scope.DiScope
 import testClasses.TestClass
 import kotlin.test.*
 
+@Suppress("unused")
 class ModuleBuilderTest {
 
     @Test

@@ -6,10 +6,11 @@ import testClasses.TestClass
 import kotlin.test.Test
 import kotlin.test.assertNotSame
 
+@Suppress("unused")
 class DiFactoryProviderTest {
 
     @Test
-    fun providerDoesNotCacheInstance() = runTest {
+    fun providerDoesNotCacheInstance(): dynamic = runTest {
         class SimpleClass : TestClass()
 
         val provider = DiFactoryProvider({ SimpleClass() })
@@ -21,7 +22,7 @@ class DiFactoryProviderTest {
     }
 
     @Test
-    fun providerReturnsDifferentInstanceAfterRelease() = runTest {
+    fun providerReturnsDifferentInstanceAfterRelease(): dynamic = runTest {
         class SimpleClass : TestClass()
 
         val provider = DiFactoryProvider({ SimpleClass() })

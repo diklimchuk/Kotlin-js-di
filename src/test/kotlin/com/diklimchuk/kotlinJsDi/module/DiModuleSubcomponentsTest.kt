@@ -4,6 +4,7 @@ import com.diklimchuk.kotlinJsDi.DiComponent
 import com.diklimchuk.kotlinJsDi.scope.DiScope
 import kotlin.test.*
 
+@Suppress("unused")
 class DiModuleSubcomponentsTest {
 
     @Test

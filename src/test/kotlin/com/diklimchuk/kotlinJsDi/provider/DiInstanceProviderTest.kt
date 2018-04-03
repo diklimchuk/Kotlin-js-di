@@ -7,10 +7,11 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertSame
 
+@Suppress("unused")
 class DiInstanceProviderTest {
 
     @Test
-    fun providerReturnsGivenInstanceOnce() = runTest {
+    fun providerReturnsGivenInstanceOnce(): dynamic = runTest {
         class SimpleClass : TestClass()
 
         val givenInstance = SimpleClass()
@@ -19,7 +20,7 @@ class DiInstanceProviderTest {
     }
 
     @Test
-    fun providerReturnsGivenInstanceTwice() = runTest {
+    fun providerReturnsGivenInstanceTwice(): dynamic = runTest {
         class SimpleClass : TestClass()
 
         val givenInstance = SimpleClass()
@@ -30,7 +31,7 @@ class DiInstanceProviderTest {
     }
 
     @Test
-    fun providerReturnsTheSameInstanceAfterRelease() = runTest {
+    fun providerReturnsTheSameInstanceAfterRelease(): dynamic = runTest {
         class SimpleClass : TestClass()
 
         val component = DiComponent()

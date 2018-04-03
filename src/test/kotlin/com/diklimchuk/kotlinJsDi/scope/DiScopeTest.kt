@@ -4,6 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertFails
 import kotlin.test.assertTrue
 
+@Suppress("unused")
 class DiScopeTest {
 
     @Test

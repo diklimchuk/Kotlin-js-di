@@ -6,43 +6,44 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
+@Suppress("unused")
 class DiKeyTest {
 
     @Test
-    fun KeysForTheSameClassShouldBeEqual() {
+    fun keysForTheSameClassShouldBeEqual() {
         class SimpleClass
         assertEquals(DiKey.ofClass<SimpleClass>(), DiKey.ofClass<SimpleClass>())
     }
 
     @Test
-    fun KeysForDifferentClassesShouldNotBeEqual() {
+    fun keysForDifferentClassesShouldNotBeEqual() {
         class FirstClass
         class SecondClass
         assertNotEquals(DiKey.ofClass<FirstClass>(), DiKey.ofClass<SecondClass>())
     }
 
     @Test
-    fun KeysForClassAndSubclassShouldNotBeEqual() {
+    fun keysForClassAndSubclassShouldNotBeEqual() {
         open class MainClass
         class Subclass : MainClass()
         assertNotEquals(DiKey.ofClass<MainClass>(), DiKey.ofClass<Subclass>())
     }
 
     @Test
-    fun KeysForInterfaceAndImplementationShouldNotBeEqual() {
+    fun keysForInterfaceAndImplementationShouldNotBeEqual() {
         class Implementation : SimpleTestInterface
         assertNotEquals(DiKey.ofClass<Implementation>(), DiKey.ofClass<SimpleTestInterface>())
     }
 
     @Test
-    fun KeysForDifferentInterfaceImplementationsShouldNotBeEqual() {
+    fun keysForDifferentInterfaceImplementationsShouldNotBeEqual() {
         class FirstImplementation : SimpleTestInterface
         class SecondImplementation : SimpleTestInterface
         assertNotEquals(DiKey.ofClass<FirstImplementation>(), DiKey.ofClass<SecondImplementation>())
     }
 
     @Test
-    fun KeysForDifferentSubclassesShouldNotBeEqual() {
+    fun keysForDifferentSubclassesShouldNotBeEqual() {
         open class BaseClass
         class FirstSubclass : BaseClass()
         class SecondSubclass : BaseClass()
@@ -50,23 +51,23 @@ class DiKeyTest {
     }
 
     @Test
-    fun InlineAndExplicitKeysShouldBeEqual() {
+    fun inlineAndExplicitKeysShouldBeEqual() {
         class SimpleClass
         assertEquals(DiKey.ofClass<SimpleClass>(), DiKey.ofClass(SimpleClass::class))
     }
 
     @Test
-    fun KeysForTheSameNameShouldBeEqual() {
+    fun keysForTheSameNameShouldBeEqual() {
         assertEquals(DiKey.ofName("TestName"), DiKey.ofName("TestName"))
     }
 
     @Test
-    fun KeysForDifferentNamesShouldNotBeEqual() {
+    fun keysForDifferentNamesShouldNotBeEqual() {
         assertNotEquals(DiKey.ofName("FirstName"), DiKey.ofName("SecondName"))
     }
 
     @Test
-    fun KeysForTheSameClassAndNameShouldNotBeEqual() {
+    fun keysForTheSameClassAndNameShouldNotBeEqual() {
         class SimpleClass
         assertNotEquals(DiKey.ofClass<SimpleClass>(), DiKey.ofName("SimpleClass"))
     }

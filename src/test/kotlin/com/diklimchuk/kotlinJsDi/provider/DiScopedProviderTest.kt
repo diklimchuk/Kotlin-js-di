@@ -9,16 +9,17 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotSame
 import kotlin.test.assertSame
 
+@Suppress("unused")
 class DiScopedProviderTest {
 
     @Test
-    fun providerWillCallFactory() = runTest {
+    fun providerWillCallFactory(): dynamic = runTest {
         val result = DiScopedProvider({ IntWrapperTestClass(47) }).provide(DiComponent())
         assertEquals(IntWrapperTestClass(47), result)
     }
 
     @Test
-    fun providerReturnsCachedInstanceOnce() = runTest {
+    fun providerReturnsCachedInstanceOnce(): dynamic = runTest {
         class SimpleClass : TestClass()
 
         val component = DiComponent()
@@ -29,7 +30,7 @@ class DiScopedProviderTest {
     }
 
     @Test
-    fun providerReturnsCachedInstanceTwice() = runTest {
+    fun providerReturnsCachedInstanceTwice(): dynamic = runTest {
         class SimpleClass : TestClass()
 
         val component = DiComponent()
@@ -41,7 +42,7 @@ class DiScopedProviderTest {
     }
 
     @Test
-    fun providerReturnsDifferentInstanceAfterRelease() = runTest {
+    fun providerReturnsDifferentInstanceAfterRelease(): dynamic = runTest {
         class SimpleClass : TestClass()
 
         val component = DiComponent()

@@ -8,7 +8,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 @Suppress("unused")
-class DiModuleProviderExistanceTest {
+class DiModuleProviderExistenceTest {
 
     @Test
     fun factoryClassProviderDoesNotAddNamedProvider() {
