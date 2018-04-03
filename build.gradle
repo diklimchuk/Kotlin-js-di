@@ -19,6 +19,7 @@ apply plugin: 'kotlin2js'
 apply plugin: 'com.moowork.node'
 
 apply from: file('gradle/publish-npm.gradle')
+apply from: file('gradle/publish-jitpack.gradle')
 
 sourceCompatibility = 1.8
 
