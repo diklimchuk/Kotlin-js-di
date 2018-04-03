@@ -1,6 +1,7 @@
 package com.diklimchuk.kotlinJsDi
 
 import com.diklimchuk.kotlinJsDi.module.DiModule
+import com.diklimchuk.kotlinJsDi.module.createDiModule
 import com.diklimchuk.kotlinJsDi.scope.DiScope
 import kotlin.reflect.KClass
 
@@ -79,9 +80,12 @@ open class DiComponent(
         modules.forEach { it.release() }
     }
 
+    /**
+     * Only can open scope for direct subcomponents
+     */
     fun openScope(scope: DiScope, lateinitProviders: (DiModule.Builder) -> Unit): DiComponent {
         val subcomponent = findModuleFor(scope).getSubcomponent(scope)
-        val lateinitModule = DiModule.Builder().apply(lateinitProviders).complete()
+        val lateinitModule = createDiModule(lateinitProviders)
         lateinitModule.component = this
         subcomponent.addReleasableModule(lateinitModule)
         subcomponent.parent = this

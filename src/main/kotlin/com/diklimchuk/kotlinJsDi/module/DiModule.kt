@@ -24,10 +24,10 @@ class DiModule private constructor(
 
     lateinit var component: DiComponent
 
-    class Builder(
-            private val instanceProviders: MutableMap<DiKey, DiProvider<Any>> = mutableMapOf(),
-            private val subcomponents: MutableMap<DiScope, DiComponent> = mutableMapOf()
-    ) {
+    class Builder constructor() {
+
+        private val instanceProviders: MutableMap<DiKey, DiProvider<Any>> = mutableMapOf()
+        private val subcomponents: MutableMap<DiScope, DiComponent> = mutableMapOf()
 
         fun complete(): DiModule {
             return DiModule(instanceProviders, subcomponents)
@@ -103,7 +103,6 @@ class DiModule private constructor(
     }
 
     fun getSubcomponent(scope: DiScope): DiComponent {
-        subcomponents.forEach { console.log("Scope: ${it.key}. Subcomponent: ${it.value}") }
         return subcomponents[scope] ?: throw Exception("No subcomponent for scope: $scope")
     }
 

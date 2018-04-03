@@ -1,4 +1,4 @@
-package com.diklimchuk.kotlinJsDi.module
+package com.diklimchuk.kotlinJsDi.module.builder
 
 import sinon.Sinon
 import kotlin.test.Test
