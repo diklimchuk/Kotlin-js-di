@@ -17,6 +17,7 @@ version '0.0.4'
 
 apply plugin: 'kotlin2js'
 apply plugin: 'com.moowork.node'
+apply plugin: 'maven'
 
 apply from: file('gradle/publish-npm.gradle')
 apply from: file('gradle/publish-jitpack.gradle')
