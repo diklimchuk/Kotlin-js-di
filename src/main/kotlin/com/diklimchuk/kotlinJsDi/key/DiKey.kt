@@ -1,4 +1,4 @@
-package com.diklimchuk.kotlinJsDi
+package com.diklimchuk.kotlinJsDi.key
 
 import kotlin.reflect.KClass
 

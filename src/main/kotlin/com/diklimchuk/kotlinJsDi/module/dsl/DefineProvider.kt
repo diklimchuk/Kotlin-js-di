@@ -1,7 +1,7 @@
 package com.diklimchuk.kotlinJsDi.module.dsl
 
-import com.diklimchuk.kotlinJsDi.DiComponent
-import com.diklimchuk.kotlinJsDi.DiKey
+import com.diklimchuk.kotlinJsDi.component.DiComponent
+import com.diklimchuk.kotlinJsDi.key.DiKey
 import com.diklimchuk.kotlinJsDi.module.CacheStrategy
 import com.diklimchuk.kotlinJsDi.module.DiModule
 

@@ -1,6 +1,6 @@
 package com.diklimchuk.kotlinJsDi.provider
 
-import com.diklimchuk.kotlinJsDi.DiComponent
+import com.diklimchuk.kotlinJsDi.component.DiComponent
 import runTest
 import testClasses.IntWrapperTestClass
 import testClasses.TestClass

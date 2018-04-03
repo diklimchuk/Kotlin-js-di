@@ -1,6 +1,6 @@
 package com.diklimchuk.kotlinJsDi.module.dsl
 
-import com.diklimchuk.kotlinJsDi.DiKey
+import com.diklimchuk.kotlinJsDi.key.DiKey
 import com.diklimchuk.kotlinJsDi.module.DiModule
 import com.diklimchuk.kotlinJsDi.provider.DiProvider
 

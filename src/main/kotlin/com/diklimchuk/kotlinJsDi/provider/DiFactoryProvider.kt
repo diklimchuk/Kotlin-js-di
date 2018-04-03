@@ -1,6 +1,6 @@
 package com.diklimchuk.kotlinJsDi.provider
 
-import com.diklimchuk.kotlinJsDi.DiComponent
+import com.diklimchuk.kotlinJsDi.component.DiComponent
 
 class DiFactoryProvider<T>(private val factory: suspend DiComponent.() -> T) : DiProvider<T> {
     override suspend fun provide(component: DiComponent): T = component.factory()

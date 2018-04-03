@@ -1,6 +1,6 @@
 package com.diklimchuk.kotlinJsDi.module.dsl
 
-import com.diklimchuk.kotlinJsDi.DiComponent
+import com.diklimchuk.kotlinJsDi.component.DiComponent
 import com.diklimchuk.kotlinJsDi.scope.DiScope
 import com.diklimchuk.kotlinJsDi.module.DiModule
 

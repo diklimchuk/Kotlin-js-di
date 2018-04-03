@@ -1,6 +1,6 @@
 package com.diklimchuk.kotlinJsDi.module
 
-import com.diklimchuk.kotlinJsDi.DiKey
+import com.diklimchuk.kotlinJsDi.key.DiKey
 import testClasses.SimpleTestInterface
 import testClasses.TestClass
 import kotlin.test.Test

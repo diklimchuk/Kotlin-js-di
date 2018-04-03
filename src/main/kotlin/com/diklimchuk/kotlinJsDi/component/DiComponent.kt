@@ -1,5 +1,6 @@
-package com.diklimchuk.kotlinJsDi
+package com.diklimchuk.kotlinJsDi.component
 
+import com.diklimchuk.kotlinJsDi.key.DiKey
 import com.diklimchuk.kotlinJsDi.module.DiModule
 import com.diklimchuk.kotlinJsDi.module.createDiModule
 import com.diklimchuk.kotlinJsDi.scope.DiScope
@@ -33,8 +34,7 @@ open class DiComponent(
         return inject(key)
     }
 
-    suspend fun <T : Any> inject(key: DiKey): T {
-
+    private suspend fun <T : Any> inject(key: DiKey): T {
         return try {
             findModuleFor(key)
                     .getProvider<T>(key)

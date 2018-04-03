@@ -2,8 +2,8 @@
 
 package com.diklimchuk.kotlinJsDi.module.builder
 
-import com.diklimchuk.kotlinJsDi.DiComponent
-import com.diklimchuk.kotlinJsDi.DiKey
+import com.diklimchuk.kotlinJsDi.component.DiComponent
+import com.diklimchuk.kotlinJsDi.key.DiKey
 import com.diklimchuk.kotlinJsDi.module.DiModule
 import com.diklimchuk.kotlinJsDi.provider.DiInstanceProvider
 import com.diklimchuk.kotlinJsDi.scope.DiScope

@@ -1,6 +1,6 @@
 package com.diklimchuk.kotlinJsDi.scope
 
-import com.diklimchuk.kotlinJsDi.DiComponent
+import com.diklimchuk.kotlinJsDi.component.DiComponent
 
 /**
  * Represents [DiComponent] scope.

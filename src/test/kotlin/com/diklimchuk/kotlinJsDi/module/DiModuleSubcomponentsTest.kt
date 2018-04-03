@@ -1,6 +1,6 @@
 package com.diklimchuk.kotlinJsDi.module
 
-import com.diklimchuk.kotlinJsDi.DiComponent
+import com.diklimchuk.kotlinJsDi.component.DiComponent
 import com.diklimchuk.kotlinJsDi.scope.DiScope
 import kotlin.test.*
 
