@@ -11,7 +11,7 @@ import kotlin.test.assertNotNull
 @Suppress("unused")
 class ReleasingLateinitModule {
 
-    private val childScope = DiScope.create(1)
+    private val childScope = DiScope.SINGLETON.createChild()
     private val component = DiComponent(createDiModule {
         it hasSubcomponents {
             it add DiComponent() scoped childScope

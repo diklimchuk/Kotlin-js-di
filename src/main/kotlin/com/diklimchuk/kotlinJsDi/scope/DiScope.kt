@@ -4,43 +4,31 @@ import com.diklimchuk.kotlinJsDi.component.DiComponent
 
 /**
  * Represents [DiComponent] scope.
- *
- * TODO: Don't allow to create scopes with the same level.
- *
- * TODO: Allow to create child scopes with scope.createChild() and prohibit to use [create]
- *
- * @param level Represents how deep in the hierarchy scope is. The lesser the value the closer with the root.
- * Can't be negative. 0 is reserved for [SINGLETON].
  */
-class DiScope private constructor(private val level: Int) : Comparable<DiScope> {
+class DiScope private constructor(
+        private val parent: DiScope? = null
+) {
 
-    init {
-        if (level < 0) {
-            throw Exception("Minimal level can be 0.")
-        }
-    }
+    private val children: MutableCollection<DiScope> = mutableListOf()
 
     companion object {
         /** The root scope */
-        val SINGLETON = DiScope(0)
+        val SINGLETON = DiScope()
+    }
 
-        fun create(level: Int): DiScope {
-            if (level == 0) {
-                throw Exception("There can't be two root scopes. Use values greater than 0")
+    fun createChild(): DiScope {
+        return DiScope(this)
+                .apply { children.add(this) }
+    }
+
+    fun isAncestorOf(other: DiScope): Boolean {
+        var current: DiScope? = other
+        while (current != null) {
+            if (current == this) {
+                return true
             }
-            return DiScope(level)
+            current = current.parent
         }
-    }
-
-    override fun compareTo(other: DiScope): Int {
-        return -(level - other.level)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return other is DiScope && level == other.level
-    }
-
-    override fun hashCode(): Int {
-        return level
+        return false
     }
 }

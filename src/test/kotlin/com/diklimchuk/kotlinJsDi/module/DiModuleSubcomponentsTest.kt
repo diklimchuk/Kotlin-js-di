@@ -11,7 +11,7 @@ class DiModuleSubcomponentsTest {
     fun canCheckThatAddedSubcomponentIsNotPresent() {
         val module = createDiModule {
             it hasSubcomponents {
-                it add DiComponent() scoped DiScope.create(1)
+                it add DiComponent() scoped DiScope.SINGLETON.createChild()
             }
         }
         assertFalse(module.hasSubcomponent(DiScope.SINGLETON))
@@ -29,7 +29,7 @@ class DiModuleSubcomponentsTest {
 
     @Test
     fun nestedSubcomponentDoesNotBelongToTheModule() {
-        val nestedScope = DiScope.create(1)
+        val nestedScope = DiScope.SINGLETON.createChild()
         val nestedSubcomponent = DiComponent()
         val nestedModule = createDiModule {
             it hasSubcomponents {
@@ -48,7 +48,7 @@ class DiModuleSubcomponentsTest {
 
     @Test
     fun cantRetrieveNestedSubcomponent() {
-        val nestedScope = DiScope.create(1)
+        val nestedScope = DiScope.SINGLETON.createChild()
         val nestedSubcomponent = DiComponent()
         val nestedModule = createDiModule {
             it hasSubcomponents {

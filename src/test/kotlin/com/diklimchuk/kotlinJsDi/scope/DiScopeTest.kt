@@ -1,69 +1,63 @@
 package com.diklimchuk.kotlinJsDi.scope
 
 import kotlin.test.Test
-import kotlin.test.assertFails
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 @Suppress("unused")
 class DiScopeTest {
 
     @Test
-    fun levelCantBeNegative1() {
-        assertFails { DiScope.create(-1) }
+    fun singletonIsAParentForAnyOtherScope1() {
+        assertTrue(DiScope.SINGLETON.isAncestorOf(DiScope.SINGLETON.createChild()))
     }
 
     @Test
-    fun levelCantBeNegative2() {
-        assertFails { DiScope.create(-12130) }
+    fun singletonIsAParentForAnyOtherScope2() {
+        assertTrue(DiScope.SINGLETON.isAncestorOf(DiScope.SINGLETON.createChild(2)))
     }
 
     @Test
-    fun cantDefineAnotherSingletonScope() {
-        assertFails { DiScope.create(0) }
+    fun singletonIsAParentForAnyOtherScope3() {
+        assertTrue(DiScope.SINGLETON.isAncestorOf(DiScope.SINGLETON.createChild(100)))
     }
 
     @Test
-    fun singletonIsGreaterThanAnyOtherScope1() {
-        assertTrue(DiScope.SINGLETON > DiScope.create(1))
+    fun childScopeIsAParentForItsChildren1() {
+        val scope = DiScope.SINGLETON.createChild()
+        assertTrue(scope.isAncestorOf(scope.createChild(5)))
     }
 
     @Test
-    fun singletonIsGreaterThanAnyOtherScope2() {
-        assertTrue(DiScope.SINGLETON > DiScope.create(1123))
+    fun childScopeIsAParentForItsChildren2() {
+        val scope = DiScope.SINGLETON.createChild(5)
+        assertTrue(scope.isAncestorOf(scope.createChild(5)))
     }
 
     @Test
-    fun singletonIsGreaterThanAnyOtherScope3() {
-        assertTrue(DiScope.SINGLETON > DiScope.create(18239))
+    fun childScopeIsAParentForItsChildren3() {
+        val scope = DiScope.SINGLETON.createChild(3)
+        assertTrue(scope.isAncestorOf(scope.createChild(10)))
     }
 
     @Test
-    fun lowerLevelMeansGreaterScope1() {
-        assertTrue(DiScope.create(1) > DiScope.create(18239))
+    fun siblingScopeIsNotAParent1() {
+        assertFalse(DiScope.SINGLETON.createChild(1).isAncestorOf(DiScope.SINGLETON.createChild(5)))
     }
 
     @Test
-    fun lowerLevelMeansGreaterScope2() {
-        assertTrue(DiScope.create(3) > DiScope.create(4))
+    fun siblingScopeIsNotAParent2() {
+        assertFalse(DiScope.SINGLETON.createChild(5).isAncestorOf(DiScope.SINGLETON.createChild(7)))
     }
 
     @Test
-    fun lowerLevelMeansGreaterScope3() {
-        assertTrue(DiScope.create(15) > DiScope.create(24))
+    fun siblingScopeIsNotAParent3() {
+        assertFalse(DiScope.SINGLETON.createChild(10).isAncestorOf(DiScope.SINGLETON.createChild(7)))
     }
 
-    @Test
-    fun sameLevelMeansEqualScopes1() {
-        assertTrue(DiScope.create(1) == DiScope.create(1))
-    }
-
-    @Test
-    fun sameLevelMeansEqualScopes2() {
-        assertTrue(DiScope.create(15) == DiScope.create(15))
-    }
-
-    @Test
-    fun sameLevelMeansEqualScopes3() {
-        assertTrue(DiScope.create(149) == DiScope.create(149))
+    private fun DiScope.createChild(times: Int): DiScope {
+        var scope = this
+        (1..times).forEach { scope = scope.createChild() }
+        return scope
     }
 }

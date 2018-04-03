@@ -59,7 +59,7 @@ class SameProviderTest {
 
     @Test
     fun shouldFailIfSameClassProvidersInSubcomponent(): dynamic = runTest {
-        val childScope = DiScope.create(1)
+        val childScope = DiScope.SINGLETON.createChild()
         val subcomponent = DiComponent(createDiModule {
             it hasSubcomponents {
                 it add DiComponent(createDiModule {
@@ -74,7 +74,7 @@ class SameProviderTest {
 
     @Test
     fun shouldFailIfSameNameProvidersInSubcomponent(): dynamic = runTest {
-        val childScope = DiScope.create(1)
+        val childScope = DiScope.SINGLETON.createChild()
         val subcomponent = DiComponent(createDiModule {
             it hasSubcomponents {
                 it add DiComponent(createDiModule {

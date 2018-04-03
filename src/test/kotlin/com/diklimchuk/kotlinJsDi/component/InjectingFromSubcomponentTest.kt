@@ -16,7 +16,7 @@ class InjectingFromSubcomponentTest {
     @Suppress("UNUSED_PARAMETER")
     private class ClassWithTwoDependencies(firstDependency: TestClass, secondDependency: TestClass)
 
-    private val childScope = DiScope.create(1)
+    private val childScope = DiScope.SINGLETON.createChild()
 
     @Test
     fun subcomponentShouldProvideNamedDependency(): dynamic = runTest {
