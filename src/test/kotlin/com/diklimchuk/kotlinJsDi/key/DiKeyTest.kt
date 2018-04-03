@@ -1,5 +1,6 @@
-package com.diklimchuk.kotlinJsDi
+package com.diklimchuk.kotlinJsDi.key
 
+import com.diklimchuk.kotlinJsDi.DiKey
 import testClasses.SimpleTestInterface
 import kotlin.test.Test
 import kotlin.test.assertEquals
