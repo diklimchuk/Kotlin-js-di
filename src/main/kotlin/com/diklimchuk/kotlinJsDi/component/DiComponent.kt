@@ -18,7 +18,9 @@ open class DiComponent(
     private val modules: Collection<DiModule> = modules.toList()
     private val releasableModules: MutableCollection<DiModule> = mutableListOf()
 
-    init { modules.forEach { it.component = this } }
+    init {
+        modules.forEach { it.component = this }
+    }
 
     suspend inline fun <reified T : Any> get(): T {
         return get(T::class)
@@ -83,7 +85,7 @@ open class DiComponent(
     /**
      * Only can open scope for direct subcomponents
      */
-    fun openScope(scope: DiScope, lateinitProviders: (DiModule.Builder) -> Unit): DiComponent {
+    fun openScope(scope: DiScope, lateinitProviders: (DiModule.Builder) -> Unit = {}): DiComponent {
         val subcomponent = findModuleFor(scope).getSubcomponent(scope)
         val lateinitModule = createDiModule(lateinitProviders)
         lateinitModule.component = this
