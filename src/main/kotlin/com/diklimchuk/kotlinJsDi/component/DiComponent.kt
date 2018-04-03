@@ -76,8 +76,8 @@ open class DiComponent(
     }
 
     fun release() {
+        getAllModules().forEach { it.release() }
         releasableModules.clear()
-        modules.forEach { it.release() }
     }
 
     /**
