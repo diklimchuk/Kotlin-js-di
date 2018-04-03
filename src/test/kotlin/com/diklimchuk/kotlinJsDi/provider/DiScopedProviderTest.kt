@@ -3,6 +3,7 @@ package com.diklimchuk.kotlinJsDi.provider
 import com.diklimchuk.kotlinJsDi.DiComponent
 import runTest
 import testClasses.IntWrapperTestClass
+import testClasses.TestClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotSame
@@ -18,7 +19,7 @@ class DiScopedProviderTest {
 
     @Test
     fun providerReturnsCachedInstanceOnce() = runTest {
-        class SimpleClass
+        class SimpleClass : TestClass()
 
         val component = DiComponent()
         val provider = DiScopedProvider({ SimpleClass() })
@@ -29,7 +30,7 @@ class DiScopedProviderTest {
 
     @Test
     fun providerReturnsCachedInstanceTwice() = runTest {
-        class SimpleClass
+        class SimpleClass : TestClass()
 
         val component = DiComponent()
         val provider = DiScopedProvider({ SimpleClass() })
@@ -41,7 +42,7 @@ class DiScopedProviderTest {
 
     @Test
     fun providerReturnsDifferentInstanceAfterRelease() = runTest {
-        class SimpleClass
+        class SimpleClass : TestClass()
 
         val component = DiComponent()
         val provider = DiScopedProvider({ SimpleClass() })

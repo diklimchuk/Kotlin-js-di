@@ -2,6 +2,7 @@ package com.diklimchuk.kotlinJsDi.provider
 
 import com.diklimchuk.kotlinJsDi.DiComponent
 import runTest
+import testClasses.TestClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertSame
@@ -10,7 +11,7 @@ class DiInstanceProviderTest {
 
     @Test
     fun providerReturnsGivenInstanceOnce() = runTest {
-        class SimpleClass
+        class SimpleClass : TestClass()
 
         val givenInstance = SimpleClass()
         val providedInstance = DiInstanceProvider(givenInstance).provide(DiComponent())
@@ -19,7 +20,7 @@ class DiInstanceProviderTest {
 
     @Test
     fun providerReturnsGivenInstanceTwice() = runTest {
-        class SimpleClass
+        class SimpleClass : TestClass()
 
         val givenInstance = SimpleClass()
         val provider = DiInstanceProvider(givenInstance)
@@ -30,7 +31,7 @@ class DiInstanceProviderTest {
 
     @Test
     fun providerReturnsTheSameInstanceAfterRelease() = runTest {
-        class SimpleClass
+        class SimpleClass : TestClass()
 
         val component = DiComponent()
         val provider = DiInstanceProvider(SimpleClass())
