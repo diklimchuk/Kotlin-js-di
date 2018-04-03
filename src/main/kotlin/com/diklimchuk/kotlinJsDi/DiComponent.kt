@@ -79,9 +79,9 @@ open class DiComponent(
         modules.forEach { it.release() }
     }
 
-    fun openScope(scope: DiScope, lateinitProviders: (DiModule.Companion.Builder) -> Unit): DiComponent {
+    fun openScope(scope: DiScope, lateinitProviders: (DiModule.Builder) -> Unit): DiComponent {
         val subcomponent = findModuleFor(scope).getSubcomponent(scope)
-        val lateinitModule = DiModule.Companion.Builder().apply(lateinitProviders).complete()
+        val lateinitModule = DiModule.Builder().apply(lateinitProviders).complete()
         lateinitModule.component = this
         subcomponent.addReleasableModule(lateinitModule)
         subcomponent.parent = this

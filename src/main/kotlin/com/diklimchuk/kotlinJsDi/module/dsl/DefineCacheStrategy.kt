@@ -8,7 +8,7 @@ import com.diklimchuk.kotlinJsDi.provider.DiFactoryProvider
 import com.diklimchuk.kotlinJsDi.provider.DiScopedProvider
 
 class DefineCacheStrategy<T : Any>(
-        private val module: DiModule.Companion.Builder,
+        private val module: DiModule.Builder,
         private val key: DiKey,
         private val factory: suspend DiComponent.() -> T
 ) {

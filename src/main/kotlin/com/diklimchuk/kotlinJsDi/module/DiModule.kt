@@ -10,8 +10,8 @@ import com.diklimchuk.kotlinJsDi.provider.DiInstanceProvider
 import com.diklimchuk.kotlinJsDi.provider.DiProvider
 import com.diklimchuk.kotlinJsDi.provider.DiScopedProvider
 
-fun createDiModule(init: (module: DiModule.Companion.Builder) -> Unit): DiModule {
-    val builder = DiModule.Companion.Builder()
+fun createDiModule(init: (module: DiModule.Builder) -> Unit): DiModule {
+    val builder = DiModule.Builder()
     init(builder)
     return builder.complete()
 }
@@ -27,78 +27,72 @@ class DiModule private constructor(
 
     lateinit var component: DiComponent
 
-    companion object {
-        class Builder(
-                private val instanceProviders: MutableMap<DiKey, DiProvider<Any>> = mutableMapOf(),
-                private val subcomponents: MutableMap<DiScope, DiComponent> = mutableMapOf()
-        ) {
+    class Builder(
+            private val instanceProviders: MutableMap<DiKey, DiProvider<Any>> = mutableMapOf(),
+            private val subcomponents: MutableMap<DiScope, DiComponent> = mutableMapOf()
+    ) {
 
-            fun complete(): DiModule {
-                return DiModule(instanceProviders, subcomponents)
+        fun complete(): DiModule {
+            return DiModule(instanceProviders, subcomponents)
+        }
+
+        infix fun hasSubcomponents(init: (definition: DefineSubcomponents) -> Unit) {
+            val subcomponents = DefineSubcomponents(this)
+            init(subcomponents)
+        }
+
+        fun addSubcomponent(subcomponent: DiComponent, scope: DiScope) {
+            if (subcomponents.contains(scope)) {
+                throw Exception("Module already contains a subcomponent for a scope $scope")
+            }
+            subcomponents[scope] = subcomponent
+        }
+
+        inline infix fun <reified T : Any> binds(instance: T): DefineQualifier<T> {
+            val provider = DiInstanceProvider(instance)
+            val key = DiKey.ofClass<T>()
+            addProvider(key, provider)
+            return DefineQualifier(this, key, provider)
+        }
+
+        // it scopes { XClass(get()) } to "myqualifier"
+        inline infix fun <reified T : Any> scopes(noinline factory: suspend DiComponent.() -> T): DefineQualifier<T> {
+            val provider = DiScopedProvider(factory)
+            val key = DiKey.ofClass<T>()
+            addProvider(key, provider)
+            return DefineQualifier(this, key, provider)
+        }
+
+        // it provides { XClass(get()) } to "myqual"
+        inline infix fun <reified T : Any> provides(noinline factory: suspend DiComponent.() -> T): DefineQualifier<T> {
+            val provider = DiFactoryProvider(factory)
+            val key = DiKey.ofClass<T>()
+            addProvider(key, provider)
+            return DefineQualifier(this, key, provider)
+        }
+
+        infix fun name(name: String): DefineProvider {
+            return DefineProvider(DiKey.ofName(name), this)
+        }
+
+        fun <T : Any> overrideProvider(key: DiKey, provider: DiProvider<T>, name: String) {
+            if (!instanceProviders.containsKey(key)) {
+                throw Exception("Attempting to override non-existent provider for key: $key with name: $name")
+            }
+            instanceProviders.remove(key)
+            instanceProviders[DiKey.ofName(name)] = provider as DiProvider<Any>
+        }
+
+        fun <T : Any> addProvider(key: DiKey, provider: DiProvider<T>) {
+            if (hasProvider(key)) {
+                throw Exception("Can't add second provider for key $key")
             }
 
-            infix fun hasSubcomponents(init: (definition: DefineSubcomponents) -> Unit) {
-                val subcomponents = DefineSubcomponents(this)
-                init(subcomponents)
-            }
+            instanceProviders[key] = provider as DiProvider<Any>
+        }
 
-            fun addSubcomponent(subcomponent: DiComponent, scope: DiScope) {
-                if (subcomponents.contains(scope)) {
-                    throw Exception("Module already contains a subcomponent for a scope $scope")
-                }
-                subcomponents[scope] = subcomponent
-            }
-
-            inline infix fun <reified T : Any> binds(instance: T): DefineQualifier<T> {
-                val provider = DiInstanceProvider(instance)
-                val key = DiKey.ofClass<T>()
-                add(key, provider)
-                return DefineQualifier(this, key, provider)
-            }
-
-            // it scopes { XClass(get()) } to "myqualifier"
-            inline infix fun <reified T : Any> scopes(noinline factory: suspend DiComponent.() -> T): DefineQualifier<T> {
-                val provider = DiScopedProvider(factory)
-                val key = DiKey.ofClass<T>()
-                add(key, provider)
-                return DefineQualifier(this, key, provider)
-            }
-
-            // it provides { XClass(get()) } to "myqual"
-            inline infix fun <reified T : Any> provides(noinline factory: suspend DiComponent.() -> T): DefineQualifier<T> {
-                val provider = DiFactoryProvider(factory)
-                val key = DiKey.ofClass<T>()
-                add(key, provider)
-                return DefineQualifier(this, key, provider)
-            }
-
-            infix fun name(name: String): DefineProvider {
-                return DefineProvider(DiKey.ofName(name), this)
-            }
-
-            fun <T : Any> overrideProvider(key: DiKey, provider: DiProvider<T>, name: String) {
-                if (!instanceProviders.containsKey(key)) {
-                    throw Exception("Attempting to override non-existent provider for key: $key with name: $name")
-                }
-                instanceProviders.remove(key)
-                instanceProviders[DiKey.ofName(name)] = provider as DiProvider<Any>
-            }
-
-            fun <T : Any> add(key: DiKey, provider: DiProvider<T>) {
-                instanceProviders[key] = provider as DiProvider<Any>
-            }
-
-            fun <T : Any> addProvider(key: DiKey, provider: DiProvider<T>) {
-                if (hasProvider(key)) {
-                    throw Exception("Can't add second provider for key $key")
-                }
-
-                instanceProviders[key] = provider as DiProvider<Any>
-            }
-
-            private fun hasProvider(key: DiKey): Boolean {
-                return instanceProviders.containsKey(key)
-            }
+        private fun hasProvider(key: DiKey): Boolean {
+            return instanceProviders.containsKey(key)
         }
     }
 

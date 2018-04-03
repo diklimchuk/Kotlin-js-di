@@ -4,7 +4,7 @@ import com.diklimchuk.kotlinJsDi.DiComponent
 import com.diklimchuk.kotlinJsDi.module.DiModule
 
 class DefineSubcomponents(
-        private val moduleBuilder: DiModule.Companion.Builder
+        private val moduleBuilder: DiModule.Builder
 ) {
     infix fun add(subcomponent: DiComponent): DefineSubcomponentScope {
         return DefineSubcomponentScope(moduleBuilder, subcomponent)
