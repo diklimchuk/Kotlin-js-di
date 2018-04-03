@@ -13,7 +13,7 @@ buildscript {
 }
 
 group 'com.diklimchuk'
-version '0.0.3'
+version '0.0.4'
 
 apply plugin: 'kotlin2js'
 apply plugin: 'com.moowork.node'
