@@ -27,3 +27,6 @@ install {
         }
     }
 }
+
+assemble.dependsOn sourcesJar
+assemble.dependsOn javadocJar
