@@ -73,29 +73,30 @@ open class DiComponent(
         return modules + releasableModules
     }
 
-    private fun addReleasableModule(module: DiModule) {
-        releasableModules.add(module)
-    }
-
+    /**
+     * Releases references.
+     * Call this method to close subcomponent.
+     */
     fun release() {
         getAllModules().forEach { it.release() }
         releasableModules.clear()
     }
 
     /**
-     * Only can open scope for direct subcomponents
+     * Initializes subcomponent.
+     *
+     * TODO: Allow to provide only objects.
+     *
+     * @param scope Must be the scope of one of direct subcomponents.
+     * @param lateinitProviders Use this to add dependencies to graph which can't be initialized when graph is created.
+     * The objects created with it will be released when you'll call [release]
      */
     fun openScope(scope: DiScope, lateinitProviders: (DiModule.Builder) -> Unit = {}): DiComponent {
         val subcomponent = findModuleFor(scope).getSubcomponent(scope)
         val lateinitModule = createDiModule(lateinitProviders)
         lateinitModule.component = this
-        subcomponent.addReleasableModule(lateinitModule)
+        subcomponent.releasableModules.add(lateinitModule)
         subcomponent.parent = this
         return subcomponent
-    }
-
-    fun closeScope(scope: DiScope) {
-        val subcomponent = findModuleFor(scope).getSubcomponent(scope)
-        subcomponent.release()
     }
 }
