@@ -1,0 +1,3 @@
+package testClasses
+
+interface SimpleTestInterface

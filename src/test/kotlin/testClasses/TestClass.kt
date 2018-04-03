@@ -1,3 +1,0 @@
-package testClasses
-
-class TestClass
