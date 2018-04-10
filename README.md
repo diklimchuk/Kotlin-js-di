@@ -110,3 +110,9 @@ fun onPageOpened(noteId: Int) {
     subcomponent.release()
 }
 ```
+
+### TODO
+* Log error if both component and subcomponent failed dependency cretion
+* Allow only lateinit values
+* Better error descriptions
+* Logging
