@@ -1,6 +1,6 @@
 buildscript {
-    ext.kotlin_version = '1.2.31'
-    ext.coroutines_version = '0.22.5'
+    ext.kotlin_version = '1.2.70'
+    ext.coroutines_version = '0.26.1'
 
     repositories {
         mavenCentral()
@@ -95,7 +95,7 @@ task createNodeModule(type: Copy, dependsOn: compileKotlin2Js) {
 }
 classes.dependsOn createNodeModule
 
-clean { delete "$rootDir/node_modules"}
+clean { delete "$rootDir/node_modules" }
 
 task runMocha(type: NodeTask, dependsOn: [compileTestKotlin2Js, installMocha, installKotlinTest, installSinon, installKotlinCoroutines]) {
     script = file("${rootDir}/node_modules/mocha/bin/mocha")

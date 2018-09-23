@@ -38,16 +38,19 @@ open class DiComponent(
 
     private suspend fun <T : Any> inject(key: DiKey): T {
         // TODO: Don't instantiate dependencies. Check possibility first.
+        var cause: Throwable? = null
         val thisComponentDependency = try {
             findModuleFor(key)
                     .getProvider<T>(key)
                     .provide(this)
         } catch (t: Throwable) {
+            cause = t
             null
         }
         val parentComponentDependency = try {
             parent?.inject<T>(key)
         } catch (t: Throwable) {
+            cause = t
             null
         }
         if (thisComponentDependency != null && parentComponentDependency != null) {
@@ -55,7 +58,7 @@ open class DiComponent(
         }
         return thisComponentDependency
                 ?: parentComponentDependency
-                ?: throw Exception("No module contains key: $key")
+                ?: throw Exception("No module contains key: $key", cause)
     }
 
     /** Finds [DiModule] that can provide [key] */
