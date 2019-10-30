@@ -51,11 +51,11 @@ task installMocha(type: NpmTask) {
 }
 
 task installKotlinCoroutines(type: NpmTask) {
-    args = ['install', 'kotlinx-coroutines-core']
+    args = ['install', "kotlinx-coroutines-core@${coroutines_version}"]
 }
 
 task installKotlinTest(type: NpmTask) {
-    args = ['install', 'kotlin-test']
+    args = ['install', "kotlin-test@${kotlin_version}"]
 }
 
 task installSinon(type: NpmTask) {

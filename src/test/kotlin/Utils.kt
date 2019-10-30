@@ -1,11 +1,13 @@
+import kotlinx.coroutines.experimental.GlobalScope
 import kotlinx.coroutines.experimental.promise
+import kotlin.js.Promise
 import kotlin.test.assertEquals
 import kotlin.test.fail
 
 /**
  * Utility function for testing coroutines.
  */
-fun runTest(block: suspend () -> Unit): dynamic = promise { block() }
+fun runTest(block: suspend () -> Unit): Promise<Unit> = GlobalScope.promise { block() }
 
 suspend fun assertFailsWithErrorSuspend(error: Throwable, block: suspend () -> Unit) {
     var shouldFail = false
